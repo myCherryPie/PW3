@@ -1,3 +1,14 @@
+import java.util.Scanner
+
 fun main(args: Array<String>) {
-    println("Hello World!")
+    val cancle : Boolean = false
+
+    println("Welcome to Notes")
+        BigList.startBigList()
+
+    OpenArchive.showOpenArchive()
 }
+
+
+
+
