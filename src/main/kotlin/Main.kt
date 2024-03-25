@@ -1,22 +1,19 @@
-import java.util.Scanner
 
 fun main(args: Array<String>) {
 
+    println("добро пожаловать")
+    start()
 
 
-    println("Welcome to Notes")
+}
 
-    while (!InputHandler.exit) {
+fun start () {
+
+    while (!Check.exit) {
         Archives.showArchives()
-        InputHandler.inputHandler()
-
+        Check.checkInput()
     }
-
-
-    }
-
-
-
+}
 
 
 

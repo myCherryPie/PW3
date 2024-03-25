@@ -1,13 +1,17 @@
-import java.util.Scanner
+import Archives.Companion.scanner
 
-class Archive {
+class Archive(var name:String, var notes : MutableList<Note> = mutableListOf()) :AllFun() {
     companion object {
-        var archive: MutableList<Note> = mutableListOf() //List of notes
-        var archiveName = ""
-
-        fun createArchive(archiveName:String) {
-            Archives.archives.add(archiveName)
-            println(" Архив $archiveName создан")
-        }
+        var name = ""
+        var cancle = "Вернуться в меню архивов"
+        var createNote = "Создать заметку"
+        var archive = mutableListOf<Archives>()
+        var notes = listOf<String>(cancle, createNote)
     }
+
+
+
+
 }
+
+
