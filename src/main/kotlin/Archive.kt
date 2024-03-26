@@ -1,77 +1,75 @@
-
 import java.util.Scanner
-
-class Archive(val name: String,val notes: MutableList<Note>) {
-
-        val scanner = Scanner(System.`in`)
-        var nameNote = ""
+class Archive(val name: String, val noteList: MutableList<Note>) {
+    val scanner = Scanner(System.`in`)
+    fun createNote(archive: Archive, archiveList: MutableList<Archive>) {
         var text = ""
-
-    fun createNote(archive: Archive) {
-        while (nameNote.isBlank()) {
-            println("Введите название заметки или 1 чтобы вернуться в меню")
-            nameNote = scanner.nextLine()
-            if (nameNote == "1") return
-            if (nameNote.isBlank()) {
-                println("Вы ничего не ввели, попробуйте снова")
+        while (name.isNullOrEmpty() || text.isNullOrEmpty()){
+        println("Введите название заметки")
+        val name = scanner.nextLine()
+        if (name.isNullOrEmpty()) {
+            println("Вы ничего не ввели\n" +
+                    " Повторите ввод")
+        } else {
+            println("Введи текст заметки")
+            text = scanner.nextLine()
+            if (text.isNullOrEmpty()) {
+                println("Вы ничего не ввели\n Повторите ввод")
             } else {
-                while (text.isEmpty()) {
-                    println("Введи текст заметки")
-                    text = scanner.nextLine()
-                    if (text.isEmpty()) {
-                        println("Вы ничего не ввели, попробуйте снова")
-                    } else {
-                        val note = Note(name, text)
-                        archive.notes.add(note)
-                        println("Заметка $name создана")
-                        return
-                    }
-                }
+                val note = Note(name, text)
+                archive.noteList.add(note)
+                println("Заметка сохранена")
+                showNotes(archive,archiveList)
             }
+        }
         }
     }
 
-    fun showNotes(archive: Archive,list: MutableList<Archive>) {
-
-        println("Меню заметок:")
-        println("0 - Создать заметку")
-
-        for (i in archive.notes.indices) {
-            println("${i + 1} - ${archive.notes[i].name}")
+    fun showNotes(archive: Archive, archiveList: MutableList<Archive>) {
+        println("Список заметок:\n")
+        println("0 - Создать заметку\n")
+        for (i in archive.noteList.indices) {
+            println("${i + 1} - ${archive.noteList[i].name}")
         }
+        println("${archive.noteList.size + 1} - Вернуться к списку архивов\n")
+        var inputNotes = ""
+        while (inputNotes.isBlank()){
+            inputNotes = scanner.nextLine()
+        if (inputNotes.toIntOrNull() == null) {
+            println("Введите номер пункта меню\n")
+        } else {
+            val cmd = inputNotes.toInt()
+            val exitToArchive = archive.noteList.size + 1
+            when {
+                (cmd == 0) -> createNote(archive, archiveList)
+                (cmd == exitToArchive) -> return
+                (cmd > 0 && cmd <= archive.noteList.size) -> showNote(
+                    archive.noteList[cmd - 1],
+                    archive,
+                    archiveList
+                )
 
-        println("${archive.notes.size + 1} - Назад")
-        var inputMenuNotes = ""
-        while (inputMenuNotes.isBlank()) {
-            inputMenuNotes = scanner.nextLine()
-            if (inputMenuNotes.toIntOrNull() == null) {
-                println("Введите число")
-            } else {
-                val exitValue = archive.notes.size + 1
-                when {
-                    (inputMenuNotes.toInt() == 0) -> createNote(archive)
-                    (inputMenuNotes.toInt() == exitValue) -> Menu.archiveMenu(list)
-                    (inputMenuNotes.toInt() > 0 && inputMenuNotes.toInt() <= archive.notes.size) -> showNote(
-                        archive.notes[inputMenuNotes.toInt() - 1]
-                    )
-
-                    else -> println("Некорректный ввод, попробуйте снова")
-                }
+                else -> println("Такого пункта меню нет\nПовторите ввод\n")
             }
+        }
         }
     }
 
-    fun showNote(note: Note) {
-        println("Заметка:")
-        println("Название: ${note.name}")
+    fun showNote(note: Note, archive: Archive, archiveList: MutableList<Archive>) {
+        println("Заметка:\n")
+        println("Название: ${note.name}\n")
         println("Текст: ${note.text}\n")
-        println("1 - Назад")
-        while (true) {
-            val inputX = scanner.nextLine()
-            if (inputX.isBlank()) {
-                println("Введите число 1, чтобы вернуться назад")
-                scanner.nextLine()
-                return
+        println("1 - Вернуться к списку заметок\n")
+        var cmd = 0
+        while(cmd != 1) {
+            val inputCmdNote = scanner.nextLine()
+            if (inputCmdNote.toIntOrNull() == null) {
+                println("Введите цифру 1, что вернуться к списку заметок\n")
+            } else {
+                 cmd = inputCmdNote.toInt()
+                when {
+                    (cmd == 1) -> showNotes(archive, archiveList)
+                    else -> println("Такого пункта меню нет\nПовторите ввод\n")
+                }
             }
         }
     }

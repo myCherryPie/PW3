@@ -1,36 +1,36 @@
 import java.util.Scanner
+val scanner = Scanner(System.`in`)
 
 fun main(args: Array<String>) {
-
-    val scanner = Scanner(System.`in`)
-    while (true) {
-        val archiveMenu = mutableListOf<Archive>()
-        Menu.archiveMenu(archiveMenu)
-        println("Введите номер пункта меню")
-        val nextLine = scanner.nextLine()
-        if (nextLine.toIntOrNull() == null) {
-            println("Введите число")
+    val archiveList = mutableListOf<Archive>()
+    val menu = Menu()
+    var exit = true
+    while (exit) {
+        menu.archiveMenu(archiveList)
+        val input = scanner.nextLine()
+        if (input.toIntOrNull() == null) {
+            println("Введите номер пункта меню")
         } else {
-            var input = nextLine.toInt()
+            val cmd = input.toInt()
             when {
-                (input > archiveMenu.size + 1 || input < 0) -> println("Такого пункта нет, попробуйте снова")
-                (input == archiveMenu.size + 1) -> return
-                (input == 0) -> {
+
+                (cmd > archiveList.size + 1 || cmd < 0) -> println("Такого пункта меню нет\n Повторите ввод\n")
+                (cmd == archiveList.size + 1) -> exit = false
+                (cmd == 0) -> {
+                    var name = ""
+                    while (name.isBlank()){
                     println("Введите название архива")
-                    val name = scanner.nextLine()
+                    name = scanner.nextLine()
                     if (name.isNullOrEmpty()) {
-                        println("Название не может быть пустым")
+                        println("Вы ничего не ввели\n Повторите ввод\n")
                     } else {
-                        val archive = mutableListOf<Archive>()
-                        archiveMenu.add(Archive(name, mutableListOf()))
-                        println("Архив созан\n")
-
-                    }
+                        archiveList.add(Archive(name, mutableListOf()))
+                    }}
                 }
-
-                (input > 0 && input <= archiveMenu.size) -> {
-                    archiveMenu[input - 1].showNotes()
-                }
+                (cmd > 0 && cmd <= archiveList.size) -> archiveList[cmd - 1].showNotes(
+                    archiveList[cmd - 1],
+                    archiveList
+                )
 
             }
         }
