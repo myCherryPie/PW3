@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
                     while (name.isBlank()){
                     println("Введите название архива")
                     name = scanner.nextLine()
-                    if (name.isNullOrEmpty()) {
+                    if (name.isNullOrBlank()) {
                         println("Вы ничего не ввели\n Повторите ввод\n")
                     } else {
                         archiveList.add(Archive(name, mutableListOf()))
